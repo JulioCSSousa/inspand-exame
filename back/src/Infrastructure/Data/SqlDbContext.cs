@@ -1,4 +1,5 @@
 using System.Reflection;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -13,7 +14,7 @@ public class SqlDbContext : DbContext
         => _domainEventService = domainEventService;
 
     public SqlDbContext(DbContextOptions<SqlDbContext> option) : base(option) { }
-
+    public DbSet<Book> Books { get; set; }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var result = await base.SaveChangesAsync(cancellationToken);

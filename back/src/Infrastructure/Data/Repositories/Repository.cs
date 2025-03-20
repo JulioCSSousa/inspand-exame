@@ -4,58 +4,54 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repositories;
 
-public class Repository<TEntity> : IDisposable, IRepository<TEntity> where TEntity : Entity<TEntity>
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity<TEntity>
 {
-    protected SqlDbContext Context;
-    protected DbSet<TEntity> DbSet;
+    protected readonly SqlDbContext _context;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public Repository(SqlDbContext context)
     {
-        Context = context;
-        DbSet = context.Set<TEntity>();
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _dbSet = _context.Set<TEntity>();
     }
 
     public virtual async Task InsertAsync(TEntity entity)
     {
         if (entity == null)
-            throw new ArgumentNullException("entity");
+            throw new ArgumentNullException(nameof(entity));
 
         entity.SetLastAction();
-
-        DbSet.Add(entity);
-
-        await Context.SaveChangesAsync();
+        await _dbSet.AddAsync(entity);
     }
 
     public virtual async Task DeleteAsync(long id)
     {
-        TEntity entity = await this.GetByIdAsync(id);
-
+        var entity = await GetByIdAsync(id);
         if (entity == null)
-            throw new ArgumentNullException("entity");
+            throw new KeyNotFoundException($"Entity with ID {id} not found.");
 
-        DbSet.Remove(entity);
-
-        await Context.SaveChangesAsync();
+        _dbSet.Remove(entity);
     }
 
     public virtual async Task UpdateAsync(TEntity entity)
     {
         if (entity == null)
-            throw new ArgumentNullException("entity");
+            throw new ArgumentNullException(nameof(entity));
 
         entity.SetLastAction();
-        DbSet.Update(entity);
-
-        await Context.SaveChangesAsync();
+        _dbSet.Update(entity);
     }
 
     public virtual async Task<TEntity> GetByIdAsync(long id)
-        => await DbSet.FirstOrDefaultAsync(p => p.Id == id);
+    {
+        var entity = await _dbSet.FirstOrDefaultAsync(p => p.Id == id);
+        if (entity == null)
+            throw new KeyNotFoundException($"Entity with ID {id} not found.");
+        return entity;
+    }
 
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
-        => await DbSet.ToListAsync();
-
-    public void Dispose()
-        => Context.Dispose();
+    {
+        return await _dbSet.ToListAsync();
+    }
 }

@@ -14,4 +14,5 @@ public interface IService<TEntity> where TEntity : Entity<TEntity>
     Task<TEntity> GetByIdAsync(long id);
 
     Task<IEnumerable<TEntity>> GetAllAsync();
+    
 }

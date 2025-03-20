@@ -10,7 +10,7 @@ services:
         ports:
             - "1433:1433"
         volumes:
-            - C:\Users\Public\Docker\Volumes\INSPAND_MSSQL_2017:/var/opt/mssql/data
+            - ./sqlserver-data:/var/opt/mssql/data:rw
         networks:
             - INSPAND-DOCKER-NETWORK
         

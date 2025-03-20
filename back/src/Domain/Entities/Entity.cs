@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Events;
 using Domain.Interfaces;
 using FluentValidation;
@@ -12,8 +13,10 @@ public abstract class Entity<TEntity> : AbstractValidator<TEntity>, IHasDomainEv
     public DateTime? LastUpdatedDate { get; protected set; }
 
     public abstract bool IsValid();
-
+  
+    [NotMapped]
     public ValidationResult ValidationResult { get; protected set; }
+    [NotMapped]
     public List<DomainEvent> DomainEvents { get; set; }
 
     protected Entity()
