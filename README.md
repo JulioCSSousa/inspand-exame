@@ -55,10 +55,13 @@ Para o envio de e-mail, implemente apenas a chamada do evento responsável pela 
 
 Como parte da avaliação, forneça seu entendimento sobre cada camada do projeto:
 1. Qual o papel da camada Domain?
-2. Qual o papel da camada Infrastructure?
-3. Qual o papel da camada WebApp?
-4. Aponte um ponto de melhoria que considere relevante no projeto.
-
+ Resposta: A camada Domain contém o núcleo da lógica de negócio e define todas as entidades, objetos de valor, agregados, interfaces e regras relacionadas ao domínio do negócio.
+3. Qual o papel da camada Infrastructure?
+ Resposta: A camada Infrastructure é responsável por lidar com detalhes técnicos externos, como persistência (acesso a banco de dados), chamadas externas a APIs, integração com serviços externos, logging, envio de e-mails, etc.
+5. Qual o papel da camada WebApp?
+Resposta: A camada WebApp é a camada de apresentação da aplicação, geralmente um projeto Web (ASP.NET MVC ou APIs) que interage diretamente com o usuário final ou com consumidores de APIs.
+7. Aponte um ponto de melhoria que considere relevante no projeto.
+- Não sei dizer
 ### Regras
 
 O candidato terá **5 horas** para desenvolvimento e feedback.
